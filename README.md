@@ -2,9 +2,6 @@
 
 FlyHigher is a modern, full-stack flight booking application built with **Next.js 14**, **PostgreSQL**, and **Tailwind CSS**. It offers a seamless experience for users to search, book, and manage flights, while providing administrators with a powerful dashboard to manage the entire platform.
 
-![FlyHigher Banner](/public/banner-placeholder.png)
-_(Note: Replace with actual screenshot)_
-
 ## ✨ Features
 
 ### 👤 User Features
