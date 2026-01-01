@@ -2,11 +2,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const LoadingTicketCard = () => {
   return (
-    <div className="bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-gray-200">
+    <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 md:p-6 shadow-sm border border-gray-200 dark:border-slate-700">
       <div className="flex flex-col md:flex-row gap-6 items-center">
         {/* Airline Info Skeleton */}
         <div className="flex items-center gap-4 w-full md:w-48">
-          <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center p-2 shadow-sm border border-gray-100 overflow-hidden">
+          <div className="w-12 h-12 rounded-xl bg-gray-50 dark:bg-slate-700 flex items-center justify-center p-2 shadow-sm border border-gray-100 dark:border-slate-600 overflow-hidden">
             <Skeleton className="w-full h-full rounded-md" />
           </div>
           <div className="flex flex-col gap-1">
@@ -31,10 +31,10 @@ const LoadingTicketCard = () => {
           {/* Route Line */}
           <div className="flex flex-col items-center flex-1 px-2 relative gap-1">
             <Skeleton className="w-16 h-3" />
-            <div className="w-full h-[2px] bg-gray-100 relative rounded-full overflow-hidden">
-              <div className="absolute left-0 top-0 bottom-0 w-full bg-gray-200" />
+            <div className="w-full h-[2px] bg-gray-100 dark:bg-slate-600 relative rounded-full overflow-hidden">
+              <div className="absolute left-0 top-0 bottom-0 w-full bg-gray-200 dark:bg-slate-500" />
             </div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-1 rounded-full border border-gray-100 shadow-sm">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-slate-700 p-1 rounded-full border border-gray-100 dark:border-slate-600 shadow-sm">
               <Skeleton className="w-4 h-4 rounded-full" />
             </div>
           </div>
