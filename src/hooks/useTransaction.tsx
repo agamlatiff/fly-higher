@@ -75,6 +75,24 @@ const useTransaction = ({ user }: Props) => {
 
       window.snap.pay(transaction.token, {
         onSuccess: function () {
+          // Save ticket data for success page
+          const ticketData = {
+            code: transaction.ticketCode || `FLYH-${transaction.ticketId?.slice(0, 6).toUpperCase() || "XXXXXX"}`,
+            passenger: user?.name || "Guest",
+            email: user?.email || "your email",
+            departure: {
+              city: data?.flightDetail?.departureCity || "Origin",
+              code: data?.flightDetail?.departureCityCode || "---",
+              time: data?.flightDetail?.departureDate ? new Date(data.flightDetail.departureDate).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) : "--:--",
+            },
+            arrival: {
+              city: data?.flightDetail?.destinationCity || "Destination",
+              code: data?.flightDetail?.destinationCityCode || "---",
+            },
+            date: data?.flightDetail?.departureDate ? new Date(data.flightDetail.departureDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "---",
+            seat: data?.seatDetail?.seatNumber || data?.seat || "--",
+          };
+          localStorage.setItem("lastBookedTicket", JSON.stringify(ticketData));
           router.push("/success-checkout");
         },
         onPending: function () {

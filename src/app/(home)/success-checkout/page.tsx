@@ -1,16 +1,55 @@
+"use client";
+
 import { Navbar } from "@/components/ui/navbar";
 import { Footer } from "@/components/ui/footer";
-import { getUser } from "@/lib/auth";
 import Link from "next/link";
-import type { Metadata } from "next";
+import { useRef, useEffect, useState } from "react";
+import TicketActions from "./_components/TicketActions";
 
-export const metadata: Metadata = {
-  title: "Booking Confirmed! - FlyHigher",
-  description: "Your flight has been successfully booked. View your e-ticket and boarding pass.",
-};
+interface TicketData {
+  code: string;
+  passenger: string;
+  email: string;
+  departure: {
+    city: string;
+    code: string;
+    time: string;
+  };
+  arrival: {
+    city: string;
+    code: string;
+  };
+  date: string;
+  seat: string;
+}
 
-const SuccessPage = async () => {
-  const { user } = await getUser();
+const SuccessPage = () => {
+  const ticketRef = useRef<HTMLDivElement>(null);
+  const [ticketData, setTicketData] = useState<TicketData | null>(null);
+
+  useEffect(() => {
+    // Try to get ticket data from localStorage (set during checkout)
+    const storedData = localStorage.getItem("lastBookedTicket");
+    if (storedData) {
+      try {
+        setTicketData(JSON.parse(storedData));
+      } catch {
+        // Use fallback data
+        setTicketData(null);
+      }
+    }
+  }, []);
+
+  // Fallback data if no ticket data available
+  const ticket = ticketData || {
+    code: "FLYH-XXXXXX",
+    passenger: "Guest",
+    email: "your email",
+    departure: { city: "Jakarta", code: "JKT", time: "09:00 AM" },
+    arrival: { city: "Bali", code: "DPS" },
+    date: "Dec 25, 2025",
+    seat: "--",
+  };
 
   return (
     <div className="bg-background dark:bg-background-dark min-h-screen flex flex-col transition-colors duration-300">
@@ -42,12 +81,12 @@ const SuccessPage = async () => {
             Booking Confirmed!
           </h1>
           <p className="text-gray-500 dark:text-gray-400 text-lg max-w-md mx-auto">
-            Your e-ticket has been sent to <span className="font-semibold text-gray-900 dark:text-white">{user?.email || "your email"}</span>
+            Your e-ticket has been sent to <span className="font-semibold text-gray-900 dark:text-white">{ticket.email}</span>
           </p>
         </div>
 
-        {/* Boarding Pass Card */}
-        <div className="bg-white dark:bg-surface-dark rounded-3xl shadow-xl overflow-hidden mb-8 border border-gray-100 dark:border-gray-800">
+        {/* Boarding Pass Card - ref for PDF capture */}
+        <div ref={ticketRef} className="bg-white dark:bg-surface-dark rounded-3xl shadow-xl overflow-hidden mb-8 border border-gray-100 dark:border-gray-800">
           {/* Header */}
           <div className="bg-gradient-to-r from-accent to-sky-600 px-6 py-4 text-white">
             <div className="flex items-center justify-between">
@@ -66,8 +105,8 @@ const SuccessPage = async () => {
             {/* Route */}
             <div className="flex items-center justify-between mb-8">
               <div className="text-center">
-                <p className="text-3xl font-black text-gray-900 dark:text-white">JKT</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Jakarta</p>
+                <p className="text-3xl font-black text-gray-900 dark:text-white">{ticket.departure.code}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{ticket.departure.city}</p>
               </div>
               <div className="flex-1 mx-4 relative">
                 <div className="border-t-2 border-dashed border-gray-200 dark:border-gray-700" />
@@ -76,8 +115,8 @@ const SuccessPage = async () => {
                 </span>
               </div>
               <div className="text-center">
-                <p className="text-3xl font-black text-gray-900 dark:text-white">DPS</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Bali</p>
+                <p className="text-3xl font-black text-gray-900 dark:text-white">{ticket.arrival.code}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{ticket.arrival.city}</p>
               </div>
             </div>
 
@@ -88,32 +127,32 @@ const SuccessPage = async () => {
                   <span className="material-symbols-outlined text-lg">calendar_month</span>
                   <span className="text-xs font-medium uppercase">Date</span>
                 </div>
-                <p className="font-bold text-gray-900 dark:text-white">Dec 25, 2025</p>
+                <p className="font-bold text-gray-900 dark:text-white">{ticket.date}</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
                 <div className="flex items-center gap-2 text-gray-400 mb-1">
                   <span className="material-symbols-outlined text-lg">schedule</span>
                   <span className="text-xs font-medium uppercase">Time</span>
                 </div>
-                <p className="font-bold text-gray-900 dark:text-white">09:00 AM</p>
+                <p className="font-bold text-gray-900 dark:text-white">{ticket.departure.time}</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
                 <div className="flex items-center gap-2 text-gray-400 mb-1">
                   <span className="material-symbols-outlined text-lg">person</span>
                   <span className="text-xs font-medium uppercase">Passenger</span>
                 </div>
-                <p className="font-bold text-gray-900 dark:text-white truncate">{user?.name || "Guest"}</p>
+                <p className="font-bold text-gray-900 dark:text-white truncate">{ticket.passenger}</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
                 <div className="flex items-center gap-2 text-gray-400 mb-1">
                   <span className="material-symbols-outlined text-lg">airline_seat_recline_extra</span>
                   <span className="text-xs font-medium uppercase">Seat</span>
                 </div>
-                <p className="font-bold text-gray-900 dark:text-white">--</p>
+                <p className="font-bold text-gray-900 dark:text-white">{ticket.seat}</p>
               </div>
             </div>
 
-            {/* Barcode Placeholder */}
+            {/* Barcode */}
             <div className="flex flex-col items-center py-6 border-t border-dashed border-gray-200 dark:border-gray-700">
               <div className="w-48 h-16 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center mb-2">
                 <div className="flex gap-0.5">
@@ -121,27 +160,18 @@ const SuccessPage = async () => {
                     <div
                       key={i}
                       className="w-1 bg-gray-800 dark:bg-gray-200 rounded-sm"
-                      style={{ height: `${Math.random() * 20 + 20}px` }}
+                      style={{ height: `${20 + (i % 5) * 5}px` }}
                     />
                   ))}
                 </div>
               </div>
-              <p className="text-xs text-gray-400 font-mono">FLYH-XXXXXX</p>
+              <p className="text-xs text-gray-400 font-mono">{ticket.code}</p>
             </div>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
-          <button className="flex-1 flex items-center justify-center gap-2 h-14 bg-accent hover:bg-sky-400 text-primary font-bold rounded-full shadow-lg shadow-accent/30 transition-all">
-            <span className="material-symbols-outlined">download</span>
-            Download E-Ticket
-          </button>
-          <button className="flex-1 flex items-center justify-center gap-2 h-14 bg-white dark:bg-surface-dark hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-900 dark:text-white font-bold rounded-full border-2 border-gray-200 dark:border-gray-700 transition-all">
-            <span className="material-symbols-outlined">share</span>
-            Share Booking
-          </button>
-        </div>
+        <TicketActions ticketRef={ticketRef} ticketCode={ticket.code} />
 
         {/* Next Steps */}
         <div className="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-gray-800">
