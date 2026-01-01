@@ -1,3 +1,4 @@
+// Ticket detail action buttons - download, receipt, edit
 "use client";
 
 import { useState, useRef } from "react";
