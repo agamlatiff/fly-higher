@@ -9,17 +9,20 @@ interface LayoutProps {
 }
 
 const midtransClientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY ?? "";
+const isProduction = process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true";
+const snapUrl = isProduction
+  ? "https://app.midtrans.com/snap/snap.js"
+  : "https://app.sandbox.midtrans.com/snap/snap.js";
 
 const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <>
-      <QCProvider>{children}</QCProvider>;
+      <QCProvider>{children}</QCProvider>
       <Script
         type="text/javascript"
-        src="https://app.stg.midtrans.com/snap/snap.js"
+        src={snapUrl}
         data-client-key={midtransClientKey}
       />
-      ;
     </>
   );
 };
