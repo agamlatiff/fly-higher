@@ -38,12 +38,12 @@ const FlightSearchWidget = ({ cities, searchAction }: FlightSearchWidgetProps) =
                   name="departure"
                   value={departure}
                   onChange={(e) => setDeparture(e.target.value)}
-                  className="bg-transparent border-none p-0 text-gray-900 dark:text-white font-medium focus:ring-0 focus:outline-none cursor-pointer appearance-none w-full truncate"
+                  className="bg-transparent border-none p-0 text-gray-900 dark:text-white font-medium focus:ring-0 focus:outline-none cursor-pointer appearance-none w-full truncate [&>option]:bg-white [&>option]:dark:bg-gray-800 [&>option]:text-gray-900 [&>option]:dark:text-white"
                   required
                 >
-                  <option value="">Select city</option>
+                  <option value="" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">Select city</option>
                   {uniqueDepartures.map((city) => (
-                    <option key={city} value={city}>
+                    <option key={city} value={city} className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
                       {city}
                     </option>
                   ))}
@@ -72,12 +72,12 @@ const FlightSearchWidget = ({ cities, searchAction }: FlightSearchWidgetProps) =
                   name="arrival"
                   value={arrival}
                   onChange={(e) => setArrival(e.target.value)}
-                  className="bg-transparent border-none p-0 text-gray-900 dark:text-white font-medium focus:ring-0 focus:outline-none cursor-pointer appearance-none w-full truncate"
+                  className="bg-transparent border-none p-0 text-gray-900 dark:text-white font-medium focus:ring-0 focus:outline-none cursor-pointer appearance-none w-full truncate [&>option]:bg-white [&>option]:dark:bg-gray-800 [&>option]:text-gray-900 [&>option]:dark:text-white"
                   required
                 >
-                  <option value="">Select city</option>
+                  <option value="" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">Select city</option>
                   {uniqueArrivals.map((city) => (
-                    <option key={city} value={city}>
+                    <option key={city} value={city} className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
                       {city}
                     </option>
                   ))}
@@ -97,7 +97,7 @@ const FlightSearchWidget = ({ cities, searchAction }: FlightSearchWidgetProps) =
                 <input
                   type="date"
                   name="date"
-                  className="bg-transparent border-none p-0 text-gray-900 dark:text-white font-medium focus:ring-0 focus:outline-none cursor-pointer w-full"
+                  className="bg-transparent border-none p-0 text-gray-900 dark:text-white font-medium focus:ring-0 focus:outline-none cursor-pointer w-full [color-scheme:light] dark:[color-scheme:dark]"
                   required
                 />
               </div>
@@ -114,12 +114,12 @@ const FlightSearchWidget = ({ cities, searchAction }: FlightSearchWidgetProps) =
                 </span>
                 <select
                   name="passengers"
-                  className="bg-transparent border-none p-0 text-gray-900 dark:text-white font-medium focus:ring-0 focus:outline-none cursor-pointer appearance-none w-full truncate"
+                  className="bg-transparent border-none p-0 text-gray-900 dark:text-white font-medium focus:ring-0 focus:outline-none cursor-pointer appearance-none w-full truncate [&>option]:bg-white [&>option]:dark:bg-gray-800 [&>option]:text-gray-900 [&>option]:dark:text-white"
                 >
-                  <option value="1">1 Adult</option>
-                  <option value="2">2 Adults</option>
-                  <option value="3">3 Adults</option>
-                  <option value="4">4 Adults</option>
+                  <option value="1" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">1 Adult</option>
+                  <option value="2" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">2 Adults</option>
+                  <option value="3" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">3 Adults</option>
+                  <option value="4" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">4 Adults</option>
                 </select>
               </div>
             </div>
