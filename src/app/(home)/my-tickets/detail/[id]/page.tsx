@@ -4,16 +4,17 @@ import TicketDetailClient from "./_components/TicketDetailClient";
 
 export const dynamic = "force-dynamic";
 
-type Params = {
+type Params = Promise<{
   id: string;
-};
+}>;
 
 interface DetailTicketProps {
   params: Params;
 }
 
 const DetailTicketPage = async ({ params }: DetailTicketProps) => {
-  const data = await getDetailTicket(params.id);
+  const { id } = await params;
+  const data = await getDetailTicket(id);
 
   if (!data) {
     return (
