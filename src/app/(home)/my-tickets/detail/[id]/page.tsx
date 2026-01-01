@@ -2,6 +2,8 @@ import { getDetailTicket } from "../../lib/data";
 import Link from "next/link";
 import TicketDetailClient from "./_components/TicketDetailClient";
 
+export const dynamic = "force-dynamic";
+
 type Params = {
   id: string;
 };
