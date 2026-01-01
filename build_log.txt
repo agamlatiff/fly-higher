@@ -1,0 +1,8 @@
+﻿
+> booking-ticket@0.1.0 build
+> next build
+
+  Γû▓ Next.js 14.2.31
+  - Environments: .env
+
+   Creating an optimized production build ...
