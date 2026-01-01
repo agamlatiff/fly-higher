@@ -244,11 +244,8 @@ export const ViewReceiptButton = ({ ticketData }: { ticketData: TicketDetailActi
 
 export const EditPassengerButton = ({
   passengerName,
-  // ticketId will be used for API call in real implementation
-  ticketId: _ticketId
 }: {
   passengerName: string;
-  ticketId: string;
 }) => {
   const [showEdit, setShowEdit] = useState(false);
   const [name, setName] = useState(passengerName);

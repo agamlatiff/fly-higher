@@ -289,7 +289,7 @@ const TicketDetailClient = ({ data }: TicketDetailClientProps) => {
             <div className="bg-white dark:bg-surface-dark rounded-xl p-6 shadow-card border border-gray-100 dark:border-gray-800">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-text-dark dark:text-white">Passenger</h3>
-                <EditPassengerButton passengerName={data.customer.name} ticketId={data.id} />
+                <EditPassengerButton passengerName={data.customer.name} />
               </div>
 
               <div className="flex items-start gap-3">
