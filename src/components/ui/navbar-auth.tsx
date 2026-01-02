@@ -77,7 +77,7 @@ export function NavbarAuth({
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold cursor-pointer hover:bg-primary/20 transition-colors">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 dark:bg-white/10 flex items-center justify-center text-primary dark:text-white font-bold cursor-pointer hover:bg-primary/20 dark:hover:bg-white/20 transition-colors">
                       {user.name.charAt(0).toUpperCase()}
                     </div>
                   </DropdownMenuTrigger>

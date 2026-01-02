@@ -10,7 +10,11 @@ import {
 
 
 
-const SearchSummary = () => {
+interface SearchSummaryProps {
+  onEdit?: () => void;
+}
+
+const SearchSummary = ({ onEdit }: SearchSummaryProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { state, dispatch } = useContext(flightContext) as FContext;
@@ -22,19 +26,17 @@ const SearchSummary = () => {
   const isValidDeparture = departure && departure !== "Select City";
   const isValidArrival = arrival && arrival !== "Select City";
 
-  // Format date nicely
-
+  // Display title based on search
+  const displayTitle =
+    isValidDeparture && isValidArrival
+      ? `${departure} → ${arrival}`
+      : "Search Flights";
 
   // Count active filters
   const activeFilterCount = [
-    isValidDeparture,
-    isValidArrival,
-    !!date,
     !!state.seat,
     state.planeIds.length > 0,
   ].filter(Boolean).length;
-
-
 
   const clearAllFilters = () => {
     router.push("/available-flights");
@@ -46,10 +48,21 @@ const SearchSummary = () => {
     <div className="bg-white dark:bg-surface-dark rounded-2xl p-4 shadow-card border border-gray-100 dark:border-gray-800">
       {/* Search Summary Row */}
       <div className="flex flex-wrap items-center gap-3">
-        {/* Search Icon */}
-        <div className="w-10 h-10 bg-accent/10 dark:bg-accent/20 rounded-xl flex items-center justify-center flex-shrink-0">
-          <span className="material-symbols-outlined text-accent">search</span>
-        </div>
+        {/* Search/Edit Trigger */}
+        <button
+          onClick={onEdit}
+          className="group flex items-center gap-3 pr-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+        >
+          <div className="w-10 h-10 bg-accent/10 dark:bg-accent/20 group-hover:bg-accent/20 dark:group-hover:bg-accent/30 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors">
+            <span className="material-symbols-outlined text-accent">search</span>
+          </div>
+          <div className="text-left hidden sm:block">
+            <p className="text-sm font-bold text-gray-900 dark:text-white line-clamp-1">{displayTitle}</p>
+            <p className="text-xs text-sky-primary font-medium">Click to change search</p>
+          </div>
+        </button>
+
+        <div className="w-[1px] h-8 bg-gray-200 dark:bg-gray-700 hidden sm:block mx-1" />
 
         {/* Active Filters */}
         <div className="flex flex-wrap items-center gap-2 flex-1">

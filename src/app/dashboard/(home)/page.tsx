@@ -3,17 +3,35 @@ import RecentBookings from "./_components/RecentBookings";
 import RevenueChart from "./_components/RevenueChart";
 import FlightDistribution from "./_components/FlightDistribution";
 import TopDestinations from "./_components/TopDestinations";
-import { getDashboardStats, getRecentBookings } from "./lib/dashboard-data";
+
+import {
+  getDashboardStats,
+  getRecentBookings,
+  getLoadFactor,
+  getRevenueChartData,
+  getFlightDistribution,
+  getTopDestinations,
+} from "./lib/dashboard-data";
 import { rupiahFormat } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
-  const [stats, recentBookings] = await Promise.all([
+  const [
+    stats,
+    recentBookings,
+    loadFactor,
+    revenueData,
+    flightDist,
+    topDestinations,
+  ] = await Promise.all([
     getDashboardStats(),
     getRecentBookings(5),
+    getLoadFactor(),
+    getRevenueChartData(),
+    getFlightDistribution(),
+    getTopDestinations(),
   ]);
-
-  // Calculate load factor (mock calculation)
-  const loadFactor = 84.2;
 
   return (
     <div className="space-y-8">
@@ -73,9 +91,12 @@ export default async function DashboardPage() {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
-          <RevenueChart />
+          <RevenueChart data={revenueData} />
         </div>
-        <FlightDistribution />
+        <FlightDistribution
+          international={flightDist.international}
+          domestic={flightDist.domestic}
+        />
       </div>
 
       {/* Tables Row */}
@@ -83,7 +104,7 @@ export default async function DashboardPage() {
         <div className="lg:col-span-2">
           <RecentBookings bookings={recentBookings} />
         </div>
-        <TopDestinations />
+        <TopDestinations destinations={topDestinations} />
       </div>
     </div>
   );

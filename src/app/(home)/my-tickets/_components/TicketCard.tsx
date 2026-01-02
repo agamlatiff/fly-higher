@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Plane, ArrowRight } from "lucide-react";
 
-type Data = Pick<Ticket, "id"> & {
+type Data = Pick<Ticket, "id" | "status"> & {
   flight: Pick<
     Flight,
     | "departureDate"
@@ -31,8 +31,19 @@ const TicketCard = ({ data }: TicketCardProps) => {
   const durationHours = Math.floor(durationMs / (1000 * 60 * 60));
   const durationMins = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
 
+  // Determine Status
+  const isCancelled = data.status === "FAILED";
+  const isPending = data.status === "PENDING";
+  const isExpired = !isCancelled && departure < new Date();
+  const isActive = !isCancelled && !isPending && !isExpired;
+
   return (
-    <div className="group bg-white dark:bg-slate-800 rounded-2xl p-5 md:p-6 shadow-sm hover:shadow-md border border-gray-200 dark:border-slate-700 transition-all duration-300">
+    <div className="group bg-white dark:bg-slate-800 rounded-2xl p-5 md:p-6 shadow-sm hover:shadow-md border border-gray-200 dark:border-slate-700 transition-all duration-300 relative overflow-hidden">
+      {/* Status Badge (Absolute for visual flair) */}
+      <div className="absolute top-0 right-0 p-0">
+        {/* We can place a small corner ribbon or just a badge in the flow. Let's do a badge in the flow for reliability first, or absolute top-right. */}
+      </div>
+
       <div className="flex flex-col md:flex-row gap-6 items-center">
         {/* Airline Info */}
         <div className="flex items-center gap-4 w-full md:w-48">
@@ -45,11 +56,34 @@ const TicketCard = ({ data }: TicketCardProps) => {
               alt={data.flight.plane.name}
             />
           </div>
-          <div className="flex flex-col">
-            <span className="font-bold text-text-dark dark:text-white">{data.flight.plane.name}</span>
-            <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">
-              {data.seat.type}
-            </span>
+          <div className="flex flex-col gap-1">
+            <span className="font-bold text-text-dark dark:text-white leading-tight">{data.flight.plane.name}</span>
+            <div className="flex flex-wrap gap-2">
+              <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+                {data.seat.type}
+              </span>
+              {/* Status Badge - Mobile/Desktop */}
+              {isCancelled && (
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400">
+                  CANCELLED
+                </span>
+              )}
+              {isExpired && (
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
+                  EXPIRED
+                </span>
+              )}
+              {isPending && (
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
+                  PENDING
+                </span>
+              )}
+              {isActive && (
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">
+                  UPCOMING
+                </span>
+              )}
+            </div>
           </div>
         </div>
 

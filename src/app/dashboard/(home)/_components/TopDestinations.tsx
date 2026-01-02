@@ -8,15 +8,8 @@ interface TopDestinationsProps {
   destinations?: Destination[];
 }
 
-const defaultDestinations: Destination[] = [
-  { rank: 1, name: "Paris, France", count: 12450 },
-  { rank: 2, name: "Tokyo, Japan", count: 10230 },
-  { rank: 3, name: "Bali, Indonesia", count: 8540 },
-  { rank: 4, name: "New York, USA", count: 6120 },
-];
-
-const TopDestinations = ({ destinations = defaultDestinations }: TopDestinationsProps) => {
-  const maxCount = Math.max(...destinations.map((d) => d.count));
+const TopDestinations = ({ destinations = [] }: TopDestinationsProps) => {
+  const maxCount = destinations.length > 0 ? Math.max(...destinations.map((d) => d.count)) : 0;
 
   return (
     <div className="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800">
@@ -38,8 +31,8 @@ const TopDestinations = ({ destinations = defaultDestinations }: TopDestinations
                 <div className="flex items-center gap-2">
                   <span
                     className={`text-xs font-bold w-5 h-5 rounded flex items-center justify-center ${dest.rank === 1
-                        ? "bg-accent text-white"
-                        : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
+                      ? "bg-accent text-white"
+                      : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
                       }`}
                   >
                     {dest.rank}

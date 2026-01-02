@@ -8,6 +8,7 @@ export const getMyTicket = async (id: string) => {
       },
       select: {
         id: true,
+        status: true,
         flight: {
           select: {
             plane: true,

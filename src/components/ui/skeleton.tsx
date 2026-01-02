@@ -12,7 +12,7 @@ function Skeleton({
   return (
     <div
       className={cn(
-        "animate-pulse bg-gray-200",
+        "animate-pulse bg-gray-200 dark:bg-gray-800",
         variant === "default" && "rounded-md",
         variant === "text" && "h-4 rounded",
         variant === "title" && "h-8 rounded-lg",
@@ -29,7 +29,7 @@ function Skeleton({
 // Pre-composed skeleton patterns for common use cases
 function SkeletonCard({ className }: { className?: string }) {
   return (
-    <div className={cn("bg-white rounded-2xl p-6 border border-gray-100", className)}>
+    <div className={cn("bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-gray-800", className)}>
       <div className="flex items-center gap-4 mb-4">
         <Skeleton variant="avatar" />
         <div className="space-y-2 flex-1">
@@ -49,7 +49,7 @@ function SkeletonCard({ className }: { className?: string }) {
 
 function SkeletonFlightCard({ className }: { className?: string }) {
   return (
-    <div className={cn("bg-white rounded-2xl p-6 border border-gray-100", className)}>
+    <div className={cn("bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-100 dark:border-gray-800", className)}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <Skeleton variant="avatar" className="h-10 w-10" />
@@ -70,7 +70,7 @@ function SkeletonFlightCard({ className }: { className?: string }) {
           <Skeleton variant="text" className="w-12 mx-auto" />
         </div>
       </div>
-      <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+      <div className="flex justify-between items-center pt-4 border-t border-gray-100 dark:border-gray-800">
         <Skeleton variant="text" className="w-20" />
         <Skeleton variant="title" className="w-28" />
       </div>

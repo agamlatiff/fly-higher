@@ -9,8 +9,8 @@ const LoadingFilterAirlines = () => {
           key={item}
           className="font-semibold flex items-center gap-[10px]"
         >
-          <Skeleton className="w-[25px] bg-gray-200 dark:bg-gray-700 h-[25px] rounded" />
-          <Skeleton className="w-[150px] bg-gray-200 dark:bg-gray-700 h-5 rounded" />
+          <Skeleton className="w-[25px] h-[25px] rounded" />
+          <Skeleton className="w-[150px] h-5 rounded" />
         </label>
       ))}
     </div>
