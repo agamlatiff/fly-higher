@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/ui/navbar";
+import { NavbarAuth } from "@/components/ui/navbar-auth";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 
@@ -7,7 +7,7 @@ const Loading = () => {
     <div className="bg-background dark:bg-background-dark min-h-screen font-display transition-colors duration-300">
       {/* Navigation */}
       <header className="sticky top-0 z-50 bg-white/80 dark:bg-surface-dark/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
-        <Navbar />
+        <NavbarAuth user={null} isLoading={true} />
       </header>
 
       <div className="max-w-[1200px] mx-auto px-4 md:px-10 py-5">

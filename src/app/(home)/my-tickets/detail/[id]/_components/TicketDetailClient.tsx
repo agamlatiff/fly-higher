@@ -1,30 +1,30 @@
 "use client";
 
 import { useRef } from "react";
-import { Navbar } from "@/components/ui/navbar";
+import { NavbarAuth } from "@/components/ui/navbar-auth";
 import { dateFormat, rupiahFormat } from "@/lib/utils";
 import { getUrlFile } from "@/lib/supabase";
 import Image from "next/image";
+import type { User } from "@/lib/auth";
 import Link from "next/link";
 import {
   CheckCircle,
   Plane,
-  Calendar,
-  ArrowRight,
-  Luggage,
-  Star,
   DoorOpen,
   AlertTriangle,
+  XCircle,
 } from "lucide-react";
 import {
   DownloadTicketButton,
   ViewReceiptButton,
   EditPassengerButton,
+  CancelTicketButton,
 } from "./TicketDetailActions";
 
 interface TicketDetailClientProps {
   data: {
     id: string;
+    status: string;
     customer: { name: string };
     seat: { seatNumber: string; type: string };
     flight: {
@@ -39,9 +39,11 @@ interface TicketDetailClientProps {
       plane: { name: string; code: string; image: string };
     };
   };
+  user: User | null;
 }
 
-const TicketDetailClient = ({ data }: TicketDetailClientProps) => {
+const TicketDetailClient = ({ data, user }: TicketDetailClientProps) => {
+  const isCancelled = data.status === "FAILED";
   const ticketRef = useRef<HTMLDivElement>(null);
 
   // Calculate flight duration
@@ -71,7 +73,7 @@ const TicketDetailClient = ({ data }: TicketDetailClientProps) => {
     <div className="bg-background dark:bg-background-dark min-h-screen font-display transition-colors duration-300">
       {/* Navigation */}
       <header className="sticky top-0 z-50 bg-white/80 dark:bg-surface-dark/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
-        <Navbar />
+        <NavbarAuth user={user} />
       </header>
 
       <div className="max-w-[1200px] mx-auto px-4 md:px-10 py-5">
@@ -96,6 +98,21 @@ const TicketDetailClient = ({ data }: TicketDetailClientProps) => {
           </span>
         </nav>
 
+        {isCancelled && (
+          <div className="mb-8 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/30 flex items-start gap-4">
+            <div className="p-2 bg-red-100 dark:bg-red-900/40 rounded-full">
+              <XCircle className="w-6 h-6 text-red-600 dark:text-red-400" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-red-700 dark:text-red-400">Booking Cancelled</h3>
+              <p className="text-red-600 dark:text-red-300 mt-1 text-sm leading-relaxed">
+                This booking has been cancelled and is no longer valid. You cannot make any changes to this ticket.
+                If you have any questions, please contact our support team.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Main Grid */}
         <main className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-2">
           {/* LEFT COLUMN: Flight Info & Actions */}
@@ -103,19 +120,28 @@ const TicketDetailClient = ({ data }: TicketDetailClientProps) => {
             {/* Header Card */}
             <div
               ref={ticketRef}
-              className="bg-white dark:bg-surface-dark rounded-xl p-6 shadow-soft flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden border border-gray-100 dark:border-gray-800"
+              className={`bg-white dark:bg-surface-dark rounded-xl p-6 shadow-soft flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden border border-gray-100 dark:border-gray-800 ${isCancelled ? 'opacity-75 grayscale-[0.5]' : ''}`}
             >
-              {/* Background Decoration */}
+              {/* ... existing header content ... */}
               <div className="absolute -right-10 -top-10 w-40 h-40 bg-sky-primary/10 rounded-full blur-3xl pointer-events-none" />
 
               <div className="flex flex-col gap-2 z-10">
                 <div className="flex items-center gap-3">
-                  <div className="inline-flex h-7 items-center justify-center gap-x-2 rounded-full bg-emerald-100 dark:bg-emerald-900/30 pl-2 pr-3">
-                    <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                    <p className="text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wide">
-                      Confirmed
-                    </p>
-                  </div>
+                  {isCancelled ? (
+                    <div className="inline-flex h-7 items-center justify-center gap-x-2 rounded-full bg-red-100 dark:bg-red-900/30 pl-2 pr-3">
+                      <XCircle className="w-4 h-4 text-red-600 dark:text-red-400" />
+                      <p className="text-red-800 dark:text-red-300 text-xs font-bold uppercase tracking-wide">
+                        Cancelled
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="inline-flex h-7 items-center justify-center gap-x-2 rounded-full bg-emerald-100 dark:bg-emerald-900/30 pl-2 pr-3">
+                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <p className="text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wide">
+                        Confirmed
+                      </p>
+                    </div>
+                  )}
                   <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">
                     Ref:{" "}
                     <span className="text-text-dark dark:text-white font-bold font-mono">
@@ -126,16 +152,17 @@ const TicketDetailClient = ({ data }: TicketDetailClientProps) => {
                 <h1 className="text-text-dark dark:text-white text-3xl md:text-4xl font-extrabold leading-tight tracking-tight">
                   Trip to {data.flight.destinationCity}
                 </h1>
-                <p className="text-gray-500 dark:text-gray-400 text-base">
-                  You&apos;re all set for your journey!
+                <p className="text-gray-500 dark:text-gray-400 mt-1">
+                  {isCancelled ? "This booking is no longer active." : "You're all set for your journey!"}
                 </p>
               </div>
 
-              <DownloadTicketButton ticketRef={ticketRef} ticketCode={ticketData.code} />
+              <DownloadTicketButton ticketCode={ticketData.code} ticketData={ticketData} />
             </div>
 
             {/* Flight Timeline Card */}
-            <div className="bg-white dark:bg-surface-dark rounded-xl p-6 shadow-card border border-gray-100 dark:border-gray-800">
+            <div className={`bg-white dark:bg-surface-dark rounded-xl p-6 shadow-card border border-gray-100 dark:border-gray-800 ${isCancelled ? 'opacity-75' : ''}`}>
+              {/* ... timeline content ... */}
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-lg font-bold text-text-dark dark:text-white flex items-center gap-2">
                   <Plane className="w-5 h-5 text-sky-primary" />
@@ -216,28 +243,14 @@ const TicketDetailClient = ({ data }: TicketDetailClientProps) => {
             </div>
 
             {/* Management Grid */}
-            <div>
+            <div className={isCancelled ? "opacity-50 pointer-events-none grayscale" : ""}>
               <h3 className="text-xl font-bold text-text-dark dark:text-white mb-4 pl-1">
                 Manage Booking
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Change Dates Card */}
-                <div className="group relative flex items-center justify-between p-5 rounded-2xl bg-white dark:bg-surface-dark border border-gray-100 dark:border-gray-800 shadow-card hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50 dark:bg-blue-900/20 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
-                  <div className="flex flex-col gap-1 z-10">
-                    <h4 className="text-lg font-bold text-text-dark dark:text-white group-hover:text-sky-primary transition-colors">
-                      Change Dates
-                    </h4>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Reschedule your flight</p>
-                  </div>
-                  <div className="w-16 h-16 relative z-10 flex items-center justify-center">
-                    <Calendar className="w-10 h-10 text-sky-primary/60" />
-                  </div>
-                </div>
-
+              <div className="grid grid-cols-1 gap-4">
                 {/* Select Seats Card */}
                 <Link
-                  href={`/choose-seat/${data.flight.id}`}
+                  href={isCancelled ? "#" : `/choose-seat/${data.flight.id}`}
                   className="group relative flex items-center justify-between p-5 rounded-2xl bg-white dark:bg-surface-dark border border-gray-100 dark:border-gray-800 shadow-card hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 w-24 h-24 bg-yellow-50 dark:bg-yellow-900/20 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
@@ -245,40 +258,12 @@ const TicketDetailClient = ({ data }: TicketDetailClientProps) => {
                     <h4 className="text-lg font-bold text-text-dark dark:text-white group-hover:text-yellow-500 transition-colors">
                       Select Seats
                     </h4>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Window or aisle?</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Change your seat preference</p>
                   </div>
                   <div className="w-16 h-16 relative z-10 flex items-center justify-center">
                     <Plane className="w-10 h-10 text-yellow-500/60 rotate-45" />
                   </div>
                 </Link>
-
-                {/* Add Baggage Card */}
-                <div className="group relative flex items-center justify-between p-5 rounded-2xl bg-white dark:bg-surface-dark border border-gray-100 dark:border-gray-800 shadow-card hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-purple-50 dark:bg-purple-900/20 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
-                  <div className="flex flex-col gap-1 z-10">
-                    <h4 className="text-lg font-bold text-text-dark dark:text-white group-hover:text-purple-500 transition-colors">
-                      Add Baggage
-                    </h4>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">More room for gifts</p>
-                  </div>
-                  <div className="w-16 h-16 relative z-10 flex items-center justify-center">
-                    <Luggage className="w-10 h-10 text-purple-500/60" />
-                  </div>
-                </div>
-
-                {/* Upgrade Card */}
-                <div className="group relative flex items-center justify-between p-5 rounded-2xl bg-white dark:bg-surface-dark border border-gray-100 dark:border-gray-800 shadow-card hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-pink-50 dark:bg-pink-900/20 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
-                  <div className="flex flex-col gap-1 z-10">
-                    <h4 className="text-lg font-bold text-text-dark dark:text-white group-hover:text-pink-500 transition-colors">
-                      Upgrade
-                    </h4>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Treat yourself today</p>
-                  </div>
-                  <div className="w-16 h-16 relative z-10 flex items-center justify-center">
-                    <Star className="w-10 h-10 text-pink-500/60" />
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -286,10 +271,12 @@ const TicketDetailClient = ({ data }: TicketDetailClientProps) => {
           {/* RIGHT COLUMN: Sidebar */}
           <div className="flex flex-col gap-6">
             {/* Passenger Card */}
-            <div className="bg-white dark:bg-surface-dark rounded-xl p-6 shadow-card border border-gray-100 dark:border-gray-800">
+            <div className={`bg-white dark:bg-surface-dark rounded-xl p-6 shadow-card border border-gray-100 dark:border-gray-800 ${isCancelled ? 'opacity-75' : ''}`}>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-text-dark dark:text-white">Passenger</h3>
-                <EditPassengerButton passengerName={data.customer.name} />
+                {!isCancelled && (
+                  <EditPassengerButton ticketId={data.id} passengerName={data.customer.name} />
+                )}
               </div>
 
               <div className="flex items-start gap-3">
@@ -314,6 +301,7 @@ const TicketDetailClient = ({ data }: TicketDetailClientProps) => {
 
             {/* Airplane Card */}
             <div className="bg-white dark:bg-surface-dark rounded-xl p-6 shadow-card border border-gray-100 dark:border-gray-800">
+              {/* ... existing airplane content ... */}
               <h3 className="text-lg font-bold text-text-dark dark:text-white mb-4">Aircraft</h3>
               <div className="flex items-center gap-4">
                 <div className="w-16 h-12 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
@@ -334,6 +322,7 @@ const TicketDetailClient = ({ data }: TicketDetailClientProps) => {
 
             {/* Price Breakdown */}
             <div className="bg-white dark:bg-surface-dark rounded-xl p-6 shadow-card border border-gray-100 dark:border-gray-800">
+              {/* ... existing price content ... */}
               <h3 className="text-lg font-bold text-text-dark dark:text-white mb-4">
                 Payment Summary
               </h3>
@@ -364,17 +353,24 @@ const TicketDetailClient = ({ data }: TicketDetailClientProps) => {
             </div>
 
             {/* Danger Zone */}
-            <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-6 border border-red-100 dark:border-red-900/30">
-              <h3 className="text-sm font-bold text-red-700 dark:text-red-400 mb-2 flex items-center gap-2">
+            <div className={`rounded-xl p-6 border ${isCancelled ? 'bg-gray-50 dark:bg-gray-900/50 border-gray-200 dark:border-gray-800' : 'bg-red-50 dark:bg-red-900/20 border-red-100 dark:border-red-900/30'}`}>
+              <h3 className={`text-sm font-bold mb-2 flex items-center gap-2 ${isCancelled ? 'text-gray-500' : 'text-red-700 dark:text-red-400'}`}>
                 <AlertTriangle className="w-4 h-4" />
                 Danger Zone
               </h3>
-              <p className="text-xs text-red-600 dark:text-red-400 mb-4">
-                Cancelling now may result in a cancellation fee.
+              <p className={`text-xs mb-4 ${isCancelled ? 'text-gray-400' : 'text-red-600 dark:text-red-400'}`}>
+                {isCancelled
+                  ? "This ticket has already been cancelled."
+                  : "Cancelling now may result in a cancellation fee."
+                }
               </p>
-              <button className="w-full py-2 rounded-lg bg-white dark:bg-gray-800 text-red-600 dark:text-red-400 text-xs font-bold border border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors">
-                Cancel Booking
-              </button>
+              {isCancelled ? (
+                <button disabled className="w-full py-2 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-400 text-xs font-bold border border-gray-300 dark:border-gray-700 cursor-not-allowed">
+                  Ticket Cancelled
+                </button>
+              ) : (
+                <CancelTicketButton ticketId={data.id} />
+              )}
             </div>
           </div>
         </main>
@@ -387,9 +383,6 @@ const TicketDetailClient = ({ data }: TicketDetailClientProps) => {
           >
             Back
           </Link>
-          <button className="rounded-xl h-12 px-6 bg-sky-primary hover:bg-blue-600 text-white text-base font-bold shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] flex items-center gap-2">
-            Done <ArrowRight className="w-5 h-5" />
-          </button>
         </div>
       </div>
     </div>

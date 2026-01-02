@@ -33,6 +33,7 @@ export const getMyTicket = async (id: string) => {
 };
 
 export const getDetailTicket = async (id: string) => {
+  console.log("[getDetailTicket] Fetching ticket with ID:", id);
   try {
     const data = await prisma.ticket.findFirst({
       where: {
@@ -49,9 +50,10 @@ export const getDetailTicket = async (id: string) => {
       },
     });
 
+    console.log("[getDetailTicket] Data fetched:", data ? "Found" : "Not found");
     return data;
   } catch (error) {
-    console.log(error);
-    return null
+    console.error("[getDetailTicket] Error fetching ticket:", error);
+    return null;
   }
 };

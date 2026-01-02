@@ -1,20 +1,23 @@
 import { getDetailTicket } from "../../lib/data";
 import Link from "next/link";
 import TicketDetailClient from "./_components/TicketDetailClient";
+import { getUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
-type Params = Promise<{
+type Params = {
   id: string;
-}>;
+};
 
 interface DetailTicketProps {
   params: Params;
 }
 
 const DetailTicketPage = async ({ params }: DetailTicketProps) => {
-  const { id } = await params;
-  const data = await getDetailTicket(id);
+  const [data, { user }] = await Promise.all([
+    getDetailTicket(params.id),
+    getUser()
+  ]);
 
   if (!data) {
     return (
@@ -32,7 +35,8 @@ const DetailTicketPage = async ({ params }: DetailTicketProps) => {
     );
   }
 
-  return <TicketDetailClient data={data} />;
+  return <TicketDetailClient data={data} user={user} />;
 };
 
 export default DetailTicketPage;
+
