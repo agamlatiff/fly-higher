@@ -24,6 +24,18 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
+        {/* Preconnect to Google Fonts for faster loading */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        {/* Material Symbols with non-blocking load */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+          rel="stylesheet"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -52,7 +64,9 @@ export default function RootLayout({
           shadow="0 0 10px #0EA5E9,0 0 5px #0EA5E9"
         />
         <WebVitals />
-        {children}
+        <main id="main-content">
+          {children}
+        </main>
       </body>
     </html>
   );

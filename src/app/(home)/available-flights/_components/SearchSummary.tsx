@@ -21,7 +21,6 @@ const SearchSummary = ({ onEdit }: SearchSummaryProps) => {
 
   const departure = searchParams.get("departure") || "";
   const arrival = searchParams.get("arrival") || "";
-  const date = searchParams.get("date") || "";
 
   const isValidDeparture = departure && departure !== "Select City";
   const isValidArrival = arrival && arrival !== "Select City";

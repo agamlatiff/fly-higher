@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
   const skip = (page - 1) * limit;
 
   // Sorting
-  let orderBy: any = { departureDate: "asc" }; // default recommended/fastest/duration fallbacks
+  let orderBy: { departureDate?: "asc" | "desc"; price?: "asc" | "desc"; arrivalDate?: "asc" | "desc" } = { departureDate: "asc" }; // default recommended/fastest/duration fallbacks
 
   if (body.sort === 'cheapest' || body.sort === 'price_low') {
     orderBy = { price: 'asc' };

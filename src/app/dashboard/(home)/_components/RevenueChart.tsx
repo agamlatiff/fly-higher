@@ -19,7 +19,6 @@ const RevenueChart = ({ data = [] }: RevenueChartProps) => {
   const maxRevenue = Math.max(...data.map((d) => d.total));
   // Normalize data for SVG (height 200px)
   const chartHeight = 200;
-  const chartWidth = 100; // Percentage based
 
   // Calculate points
   const points = data.map((d, index) => {

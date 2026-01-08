@@ -27,7 +27,7 @@ const FlightSearchWidget = ({ cities, searchAction }: FlightSearchWidgetProps) =
           <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-2">
             {/* From */}
             <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-2xl border border-transparent hover:border-accent/30 hover:bg-white dark:hover:bg-gray-800 transition group cursor-pointer relative">
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              <label htmlFor="departure-city" className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
                 From
               </label>
               <div className="flex items-center gap-2 text-gray-900 dark:text-white font-medium">
@@ -36,6 +36,8 @@ const FlightSearchWidget = ({ cities, searchAction }: FlightSearchWidgetProps) =
                 </span>
                 <select
                   name="departure"
+                  id="departure-city"
+                  aria-label="Select departure city"
                   value={departure}
                   onChange={(e) => setDeparture(e.target.value)}
                   className="bg-transparent border-none p-0 text-gray-900 dark:text-white font-medium focus:ring-0 focus:outline-none cursor-pointer appearance-none w-full truncate [&>option]:bg-white [&>option]:dark:bg-gray-800 [&>option]:text-gray-900 [&>option]:dark:text-white"
@@ -53,6 +55,7 @@ const FlightSearchWidget = ({ cities, searchAction }: FlightSearchWidgetProps) =
               <button
                 type="button"
                 onClick={handleSwap}
+                aria-label="Swap departure and arrival cities"
                 className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-6 h-6 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-full flex items-center justify-center text-accent hover:scale-110 transition-transform md:hidden"
               >
                 <span className="material-symbols-outlined text-sm">swap_horiz</span>
@@ -61,7 +64,7 @@ const FlightSearchWidget = ({ cities, searchAction }: FlightSearchWidgetProps) =
 
             {/* To */}
             <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-2xl border border-transparent hover:border-accent/30 hover:bg-white dark:hover:bg-gray-800 transition group cursor-pointer">
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              <label htmlFor="arrival-city" className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
                 To
               </label>
               <div className="flex items-center gap-2 text-gray-900 dark:text-white font-medium">
@@ -70,6 +73,8 @@ const FlightSearchWidget = ({ cities, searchAction }: FlightSearchWidgetProps) =
                 </span>
                 <select
                   name="arrival"
+                  id="arrival-city"
+                  aria-label="Select arrival city"
                   value={arrival}
                   onChange={(e) => setArrival(e.target.value)}
                   className="bg-transparent border-none p-0 text-gray-900 dark:text-white font-medium focus:ring-0 focus:outline-none cursor-pointer appearance-none w-full truncate [&>option]:bg-white [&>option]:dark:bg-gray-800 [&>option]:text-gray-900 [&>option]:dark:text-white"
@@ -87,7 +92,7 @@ const FlightSearchWidget = ({ cities, searchAction }: FlightSearchWidgetProps) =
 
             {/* Date */}
             <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-2xl border border-transparent hover:border-accent/30 hover:bg-white dark:hover:bg-gray-800 transition group cursor-pointer">
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              <label htmlFor="flight-date" className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
                 Date
               </label>
               <div className="flex items-center gap-2 text-gray-900 dark:text-white font-medium">
@@ -97,6 +102,8 @@ const FlightSearchWidget = ({ cities, searchAction }: FlightSearchWidgetProps) =
                 <input
                   type="date"
                   name="date"
+                  id="flight-date"
+                  aria-label="Select flight date"
                   className="bg-transparent border-none p-0 text-gray-900 dark:text-white font-medium focus:ring-0 focus:outline-none cursor-pointer w-full [color-scheme:light] dark:[color-scheme:dark]"
                   required
                 />
@@ -105,7 +112,7 @@ const FlightSearchWidget = ({ cities, searchAction }: FlightSearchWidgetProps) =
 
             {/* Passengers */}
             <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-2xl border border-transparent hover:border-accent/30 hover:bg-white dark:hover:bg-gray-800 transition group cursor-pointer">
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              <label htmlFor="passenger-count" className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
                 Passengers
               </label>
               <div className="flex items-center gap-2 text-gray-900 dark:text-white font-medium">
@@ -114,6 +121,8 @@ const FlightSearchWidget = ({ cities, searchAction }: FlightSearchWidgetProps) =
                 </span>
                 <select
                   name="passengers"
+                  id="passenger-count"
+                  aria-label="Select number of passengers"
                   className="bg-transparent border-none p-0 text-gray-900 dark:text-white font-medium focus:ring-0 focus:outline-none cursor-pointer appearance-none w-full truncate [&>option]:bg-white [&>option]:dark:bg-gray-800 [&>option]:text-gray-900 [&>option]:dark:text-white"
                 >
                   <option value="1" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">1 Adult</option>

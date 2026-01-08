@@ -73,7 +73,7 @@ const HomePage = async () => {
               <div className="text-xs font-semibold text-gray-800 dark:text-gray-200">
                 Flight Confirmed
               </div>
-              <div className="text-[10px] text-gray-400">NYC → PAR</div>
+              <div className="text-[10px] text-gray-500 dark:text-gray-400">NYC → PAR</div>
             </div>
           </div>
         </div>
@@ -87,7 +87,7 @@ const HomePage = async () => {
               <div className="text-xs font-semibold text-gray-800 dark:text-gray-200">
                 Best Price Found
               </div>
-              <div className="text-[10px] text-gray-400">Saved $45</div>
+              <div className="text-[10px] text-gray-500 dark:text-gray-400">Saved $45</div>
             </div>
           </div>
         </div>
@@ -96,7 +96,7 @@ const HomePage = async () => {
       {/* Partners Section */}
       <div className="border-y border-gray-100 dark:border-gray-800 bg-white dark:bg-background-dark/50">
         <div className="max-w-7xl mx-auto py-10 px-6">
-          <p className="text-center text-xs font-semibold uppercase tracking-wider text-gray-400 mb-8">
+          <p className="text-center text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-8">
             Trusting Partners
           </p>
           <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
@@ -168,7 +168,7 @@ const HomePage = async () => {
                   <span className="text-xs px-3 py-1 bg-white dark:bg-gray-800 shadow-sm rounded-full text-gray-600 dark:text-gray-300 font-medium">
                     International
                   </span>
-                  <span className="text-xs px-3 py-1 text-gray-400 font-medium cursor-pointer hover:text-gray-600">
+                  <span className="text-xs px-3 py-1 text-gray-500 dark:text-gray-400 font-medium cursor-pointer hover:text-gray-600">
                     Domestic
                   </span>
                 </div>
@@ -335,7 +335,7 @@ const HomePage = async () => {
             <p className="text-4xl font-bold text-primary dark:text-white mb-2">
               2M+
             </p>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
               Daily Flights
             </p>
           </div>
@@ -344,7 +344,7 @@ const HomePage = async () => {
             <p className="text-4xl font-bold text-primary dark:text-white mb-2">
               50K+
             </p>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
               Happy Travelers
             </p>
           </div>
@@ -353,7 +353,7 @@ const HomePage = async () => {
             <p className="text-4xl font-bold text-primary dark:text-white mb-2">
               120+
             </p>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
               Countries
             </p>
           </div>

@@ -374,7 +374,6 @@ export const ViewReceiptButton = ({ ticketData }: { ticketData: TicketData }) =>
 export const EditPassengerButton = ({
   ticketId,
   passengerName,
-  onUpdate,
 }: {
   ticketId: string;
   passengerName: string;

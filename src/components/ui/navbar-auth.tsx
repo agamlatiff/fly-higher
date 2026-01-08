@@ -132,7 +132,10 @@ export function NavbarAuth({
         <ThemeToggle />
 
         {/* Mobile Menu Button */}
-        <button className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+        <button
+          className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+          aria-label="Open navigation menu"
+        >
           <span className="material-symbols-outlined text-gray-600 dark:text-gray-300">menu</span>
         </button>
       </div>
