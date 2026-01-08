@@ -174,39 +174,42 @@ const HomePage = async () => {
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-4 h-48">
-                <div
-                  className="rounded-xl bg-cover bg-center relative overflow-hidden group cursor-pointer shadow-sm"
-                  style={{
-                    backgroundImage:
-                      "url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400')",
-                  }}
-                >
+                <div className="rounded-xl relative overflow-hidden group cursor-pointer shadow-sm">
+                  <img
+                    src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400&q=75"
+                    alt="Bali, Indonesia"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:from-black/80 transition duration-300" />
                   <div className="absolute bottom-3 left-3 text-white">
                     <div className="font-bold text-sm">Bali</div>
                     <div className="text-[10px] opacity-80">Indonesia</div>
                   </div>
                 </div>
-                <div
-                  className="rounded-xl bg-cover bg-center relative overflow-hidden group cursor-pointer shadow-sm"
-                  style={{
-                    backgroundImage:
-                      "url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400')",
-                  }}
-                >
+                <div className="rounded-xl relative overflow-hidden group cursor-pointer shadow-sm">
+                  <img
+                    src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&q=75"
+                    alt="Tokyo, Japan"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:from-black/80 transition duration-300" />
                   <div className="absolute bottom-3 left-3 text-white">
                     <div className="font-bold text-sm">Tokyo</div>
                     <div className="text-[10px] opacity-80">Japan</div>
                   </div>
                 </div>
-                <div
-                  className="rounded-xl bg-cover bg-center relative overflow-hidden group cursor-pointer shadow-sm"
-                  style={{
-                    backgroundImage:
-                      "url('https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=400')",
-                  }}
-                >
+                <div className="rounded-xl relative overflow-hidden group cursor-pointer shadow-sm">
+                  <img
+                    src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=400&q=75"
+                    alt="Paris, France"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:from-black/80 transition duration-300" />
                   <div className="absolute bottom-3 left-3 text-white">
                     <div className="font-bold text-sm">Paris</div>
